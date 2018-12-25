@@ -8,7 +8,7 @@ var fs = require('fs');
 var async = require('async');
 var RPC = require('bitcoind-rpc');
 var http = require('http');
-var bitcore = require('bitcore-lib');
+var bitcore = require('bellcore-lib');
 var PrivateKey = bitcore.PrivateKey;
 var Transaction = bitcore.Transaction;
 
@@ -31,8 +31,8 @@ var utxoCount = 3000;
 var outputKeys = [];
 var rpc1 = new RPC(rpcConfig);
 var debug = true;
-var bitcoreDataDir = '/tmp/bitcore';
-var bitcoinDataDirs = ['/tmp/bitcoin'];
+var bitcoreDataDir = '/tmp/bellcore';
+var bitcoinDataDirs = ['/tmp/bellcoin'];
 
 var bitcoin = {
   args: {
@@ -46,13 +46,13 @@ var bitcoin = {
     rpcport: 58332,
   },
   datadir: null,
-  exec: 'bitcoind', //if this isn't on your PATH, then provide the absolute path, e.g. /usr/local/bin/bitcoind
+  exec: 'bellcoind', //if this isn't on your PATH, then provide the absolute path, e.g. /usr/local/bin/bellcoind
   processes: []
 };
 
 var bitcore = {
   configFile: {
-    file: bitcoreDataDir + '/bitcore-node.json',
+    file: bitcoreDataDir + '/bellcore-node.json',
     conf: {
       network: 'regtest',
       port: 53001,
@@ -89,7 +89,7 @@ var bitcore = {
   },
   opts: { cwd: bitcoreDataDir },
   datadir: bitcoreDataDir,
-  exec: 'bitcored',  //if this isn't on your PATH, then provide the absolute path, e.g. /usr/local/bin/bitcored
+  exec: 'bellcored',  //if this isn't on your PATH, then provide the absolute path, e.g. /usr/local/bin/bitcored
   args: ['start'],
   process: null
 };
@@ -174,7 +174,7 @@ var request = function(httpOpts, callback) {
   var request = http.request(httpOpts, function(res) {
 
     if (res.statusCode !== 200 && res.statusCode !== 201) {
-      return callback('Error from bitcore-node webserver: ' + res.statusCode);
+      return callback('Error from bellcore-node webserver: ' + res.statusCode);
     }
 
     var resError;

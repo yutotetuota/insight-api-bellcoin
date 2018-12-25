@@ -1,27 +1,27 @@
 # Insight API
 
-A Bitcoin blockchain REST and web socket API service for [Bitcore Node](https://github.com/bitpay/bitcore-node).
+A Bellcoin blockchain REST and web socket API service for [Bellcore Node](https://github.com/yutotetuota/bellcore-node).
 
-This is a backend-only service. If you're looking for the web frontend application, take a look at https://github.com/bitpay/insight-ui.
+This is a backend-only service. If you're looking for the web frontend application, take a look at https://github.com/yutotetuota/insight-ui-bellcoin.
 
 ## Getting Started
 
 ```bashl
-npm install -g bitcore@latest
-bitcore create mynode
+npm install -g git://github.com/yutotetuota/bellcore-node.git
+bellcore-node create mynode
 cd mynode
-bitcore install insight-api
-bitcore install insight-ui
-bitcore start
+bellcore-node install git://github.com/yutotetuota/insight-api-bellcoin.git
+bellcore-node install git://github.com/yutotetuota/insight-ui-bellcoin.git
+bellcore-node start
 ```
 
 The API endpoints will be available by default at: `http://localhost:3001/insight-api/`
 
 ## Prerequisites
 
-- [Bitcore 5.x](https://github.com/bitpay/bitcore)
+- [Bellcore 5.x](https://github.com/yutotetuota/bellcore)
 
-**Note:** You can use an existing Bitcoin data directory, however `txindex`, `addressindex`, `timestampindex` and `spentindex` needs to be set to true in `bitcoin.conf`, as well as a few other additional fields.
+**Note:** You can use an existing Bellcoin data directory, however `txindex`, `addressindex`, `timestampindex` and `spentindex` needs to be set to true in `bellcoin.conf`, as well as a few other additional fields.
 
 ## Notes on Upgrading from v0.3
 
@@ -70,8 +70,8 @@ There are a few changes to the `GET` endpoint for `/addr/[:address]`:
 
 Some additional general notes:
 - The transaction history for an address will be sorted in block order
-- The response for the `/sync` endpoint does not include `startTs` and `endTs` as the sync is no longer relevant as indexes are built in bitcoind.
-- The endpoint for `/peer` is no longer relevant connection to bitcoind is via ZMQ.
+- The response for the `/sync` endpoint does not include `startTs` and `endTs` as the sync is no longer relevant as indexes are built in bellcoind.
+- The endpoint for `/peer` is no longer relevant connection to bellcoind is via ZMQ.
 - `/tx` endpoint results will now include block height, and spentTx related fields will be set to `null` if unspent.
 - `/block` endpoint results does not include `confirmations` and will include `poolInfo`.
 
@@ -90,7 +90,7 @@ The `/tx/<txid>` endpoint JSON response will not include the following fields on
 object.
 - `spentTs`
 
-The `/status?q=getTxOutSetInfo` method has also been removed due to the query being very slow and locking bitcoind.
+The `/status?q=getTxOutSetInfo` method has also been removed due to the query being very slow and locking bellcoind.
 
 Plug-in support for Insight API is also no longer available, as well as the endpoints:
 - `/email/retrieve`
@@ -100,17 +100,17 @@ Caching support has not yet been added in the v0.3 upgrade.
 
 ## Query Rate Limit
 
-To protect the server, insight-api has a built it query rate limiter. It can be configurable in `bitcore-node.json` with:
+To protect the server, insight-api-bellcoin has a built in query rate limiter. It can be configurable in `bellcore-node.json` with:
 ``` json
   "servicesConfig": {
-    "insight-api": {
+    "insight-api-bellcoin": {
       "rateLimiterOptions": {
         "whitelist": ["::ffff:127.0.0.1"]
       }
     }
   }
 ```
-With all the configuration options available: https://github.com/bitpay/insight-api/blob/master/lib/ratelimiter.js#L10-17
+With all the configuration options available: https://github.com/yutotuteota/insight-api-bellcoin/blob/master/lib/ratelimiter.js#L10-17
 
 Or disabled entirely with:
 ``` json
@@ -365,7 +365,7 @@ POST response:
   /insight-api/peer
 ```
 
-### Status of the Bitcoin Network
+### Status of the Bellcoin Network
 ```
   /insight-api/status?q=xxx
 ```
@@ -410,7 +410,7 @@ Sample output:
 }
 ```
 
-`<bitcoinAddress>`: new transaction concerning <bitcoinAddress> received from network. This event is published in the `<bitcoinAddress>` room.
+`<bellcoinAddress>`: new transaction concerning <bellcoinAddress> received from network. This event is published in the `<bellcoinAddress>` room.
 
 `status`: every 1% increment on the sync task, this event will be triggered. This event is published in the `sync` room.
 

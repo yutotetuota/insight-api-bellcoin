@@ -8,9 +8,8 @@ var fs = require('fs');
 var async = require('async');
 var RPC = require('bitcoind-rpc');
 var http = require('http');
-var bitcore = require('bitcore-lib');
+var bitcore = require('bellcore-lib');
 var exec = require('child_process').exec;
-var bitcore = require('bitcore-lib');
 var Block = bitcore.Block;
 
 var blocksGenerated = 0;
@@ -26,8 +25,8 @@ var rpcConfig = {
 
 var rpc = new RPC(rpcConfig);
 var debug = true;
-var bitcoreDataDir = '/tmp/bitcore';
-var bitcoinDir = '/tmp/bitcoin';
+var bitcoreDataDir = '/tmp/bellcore';
+var bitcoinDir = '/tmp/bellcoin';
 var bitcoinDataDirs = [ bitcoinDir ];
 var blocks= [];
 
@@ -43,13 +42,13 @@ var bitcoin = {
     rpcport: 58332,
   },
   datadir: null,
-  exec: 'bitcoind', //if this isn't on your PATH, then provide the absolute path, e.g. /usr/local/bin/bitcoind
+  exec: 'bellcoind', //if this isn't on your PATH, then provide the absolute path, e.g. /usr/local/bin/bellcoind
   processes: []
 };
 
 var bitcore = {
   configFile: {
-    file: bitcoreDataDir + '/bitcore-node.json',
+    file: bitcoreDataDir + '/bellcore-node.json',
     conf: {
       network: 'regtest',
       port: 53001,
@@ -89,7 +88,7 @@ var bitcore = {
   },
   opts: { cwd: bitcoreDataDir },
   datadir: bitcoreDataDir,
-  exec: 'bitcored',  //if this isn't on your PATH, then provide the absolute path, e.g. /usr/local/bin/bitcored
+  exec: 'bellcored',  //if this isn't on your PATH, then provide the absolute path, e.g. /usr/local/bin/bellcored
   args: ['start'],
   process: null
 };
@@ -99,7 +98,7 @@ var request = function(httpOpts, callback) {
   var request = http.request(httpOpts, function(res) {
 
     if (res.statusCode !== 200 && res.statusCode !== 201) {
-      return callback('Error from bitcore-node webserver: ' + res.statusCode);
+      return callback('Error from bellcore-node webserver: ' + res.statusCode);
     }
 
     var resError;
@@ -217,7 +216,7 @@ var reportBitcoindsStarted = function() {
     return process.pid;
   });
 
-  console.log(pids.length + ' bitcoind\'s started at pid(s): ' + pids);
+  console.log(pids.length + ' bellcoind\'s started at pid(s): ' + pids);
 };
 
 var startBitcoinds = function(datadirs, callback) {
@@ -286,10 +285,10 @@ var writeBitcoreConf = function() {
 var startBitcore = function(callback) {
 
   var args = bitcore.args;
-  console.log('Using bitcored from: ');
+  console.log('Using bellcored from: ');
   async.series([
     function(next) {
-      exec('which bitcored', function(err, stdout, stderr) {
+      exec('which bellcored', function(err, stdout, stderr) {
         if(err) {
           return next(err);
         }
